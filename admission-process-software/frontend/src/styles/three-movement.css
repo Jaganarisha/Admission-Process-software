@@ -1,0 +1,1160 @@
+/* ==========================================================================
+   3D MODEL & DYNAMIC IMAGE MOVEMENT STYLES
+   Bharathidasan Engineering College (BEC) Admission Process Software
+   ========================================================================== */
+
+/* -------------------------------------------------------------
+   1. HERO INTERACTIVE MEDIA & MODE SWITCHER TABS
+   ------------------------------------------------------------- */
+.hero-interactive-shell {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  z-index: 10;
+}
+
+.hero-media-tabs {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(15, 33, 88, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 0.35rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  margin-bottom: 0.9rem;
+  justify-content: center;
+}
+
+.hero-tab-pill {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.6rem 0.9rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.hero-tab-pill:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.hero-tab-pill.active {
+  background: linear-gradient(135deg, #f4c20d 0%, #e0ac00 100%);
+  color: #0f2158;
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 16px rgba(244, 194, 13, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  font-weight: 700;
+}
+
+.hero-tab-pill .tab-badge {
+  font-size: 0.68rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(15, 33, 88, 0.2);
+  color: inherit;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.hero-tab-pill.active .tab-badge {
+  background: rgba(15, 33, 88, 0.25);
+  color: #0f2158;
+}
+
+.hero-interactive-frame {
+  position: relative;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 26px;
+  padding: 0.85rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45),
+              0 2px 12px rgba(255, 255, 255, 0.1),
+              inset 0 1px 1px rgba(255, 255, 255, 0.5),
+              inset 0 -1px 1px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.hero-interactive-frame:hover {
+  border-color: rgba(244, 194, 13, 0.6);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55),
+              0 0 35px rgba(244, 194, 13, 0.25),
+              inset 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.hero-3d-wrapper {
+  position: relative;
+  width: 100%;
+  height: 460px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 40%, #152c6b 0%, #0a163e 100%);
+}
+
+/* -------------------------------------------------------------
+   2. HERO 3D TILT PHOTO CARD
+   ------------------------------------------------------------- */
+.hero-tilt-card-root {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 4.7;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #0f2158;
+  cursor: pointer;
+  user-select: none;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: box-shadow 0.3s ease;
+}
+
+.tilt-card-glare {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  transition: opacity 0.3s ease;
+}
+
+.tilt-image-viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.tilt-campus-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  display: block;
+  transition: transform 0.15s ease-out;
+}
+
+.tilt-depth-badge {
+  position: absolute;
+  z-index: 8;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(15, 33, 88, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  color: #fff;
+  pointer-events: none;
+  border-radius: 14px;
+  padding: 0.55rem 0.95rem;
+  transition: transform 0.15s ease-out;
+}
+
+.tilt-depth-badge.top {
+  top: 1rem;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.tilt-depth-badge.bottom {
+  bottom: 2.2rem;
+  left: 1rem;
+  right: 1rem;
+}
+
+.tilt-motion-hint {
+  position: absolute;
+  bottom: 0.55rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+  z-index: 9;
+  letter-spacing: 0.02em;
+}
+
+/* -------------------------------------------------------------
+   3. THREE.JS 3D CANVAS & VIEWER STYLES
+   ------------------------------------------------------------- */
+.campus-3d-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+}
+
+.campus-3d-container:active {
+  cursor: grabbing;
+}
+
+.campus-3d-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.campus-3d-topbar {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.8rem;
+  right: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  z-index: 12;
+  pointer-events: none;
+}
+
+.campus-3d-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(15, 33, 88, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.82rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.campus-3d-badge .badge-hint {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-left: 0.25rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  padding-left: 0.45rem;
+}
+
+@media (max-width: 600px) {
+  .campus-3d-badge .badge-hint {
+    display: none;
+  }
+}
+
+.campus-3d-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  pointer-events: auto;
+}
+
+.ctrl-btn {
+  background: rgba(15, 33, 88, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  padding: 0.42rem 0.65rem;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.ctrl-btn:hover {
+  background: rgba(244, 194, 13, 0.9);
+  color: #0f2158;
+  border-color: #f4c20d;
+}
+
+.ctrl-btn.active {
+  background: #f4c20d;
+  color: #0f2158;
+  border-color: #f4c20d;
+  box-shadow: 0 0 12px rgba(244, 194, 13, 0.5);
+}
+
+/* Model Selector Tabs */
+.campus-3d-model-tabs {
+  position: absolute;
+  top: 3.5rem;
+  left: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  z-index: 12;
+  pointer-events: auto;
+}
+
+.tab-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(15, 33, 88, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.85);
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.tab-chip:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.tab-chip.active {
+  background: linear-gradient(135deg, rgba(244, 194, 13, 0.95), rgba(224, 172, 0, 0.95));
+  color: #0f2158;
+  border-color: #f4c20d;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(244, 194, 13, 0.35);
+}
+
+/* Hotspots Bar */
+.campus-3d-hotspots-bar {
+  position: absolute;
+  bottom: 0.8rem;
+  left: 0.8rem;
+  right: 0.8rem;
+  z-index: 12;
+  pointer-events: auto;
+}
+
+.hotspots-scroller {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding-bottom: 0.2rem;
+  scrollbar-width: none;
+}
+
+.hotspots-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.hotspot-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(15, 33, 88, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hotspot-pill:hover {
+  background: rgba(244, 194, 13, 0.85);
+  color: #0f2158;
+  border-color: #f4c20d;
+}
+
+.hotspot-pill.active {
+  background: #f4c20d;
+  color: #0f2158;
+  border-color: #f4c20d;
+  font-weight: 700;
+  box-shadow: 0 0 14px rgba(244, 194, 13, 0.6);
+}
+
+/* Hotspot Card Modal */
+.campus-3d-hotspot-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  width: min(320px, calc(100% - 2rem));
+  background: rgba(15, 33, 88, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(244, 194, 13, 0.6);
+  border-radius: 16px;
+  padding: 1.25rem;
+  color: #fff;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 25px rgba(244, 194, 13, 0.35);
+  animation: cardFadeIn 0.25s ease-out;
+}
+
+@keyframes cardFadeIn {
+  from { opacity: 0; transform: translate(-50%, -46%) scale(0.95); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.hotspot-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.hotspot-card-header h4 {
+  color: #f4c20d;
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.card-close {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.2rem;
+}
+
+.card-close:hover {
+  color: #fff;
+}
+
+.campus-3d-hotspot-card p {
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 0.8rem;
+}
+
+.hotspot-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+/* Fullscreen Mode */
+.campus-3d-container.fullscreen-mode {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 99999 !important;
+  border-radius: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: #070e24 !important;
+}
+
+/* -------------------------------------------------------------
+   4. DYNAMIC CAMPUS IMAGE MOVEMENT SHOWCASE
+   ------------------------------------------------------------- */
+.campus-movement-showcase {
+  margin-top: 2rem;
+  margin-bottom: 3.5rem;
+  position: relative;
+}
+
+.movement-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.movement-header-text {
+  max-width: 620px;
+}
+
+.pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(23, 48, 122, 0.1);
+  border: 1px solid rgba(23, 48, 122, 0.2);
+  color: var(--navy-dark);
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+
+.movement-header-text h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-weight: 800;
+  color: #000;
+  margin-bottom: 0.4rem;
+}
+
+.movement-mode-pills {
+  display: flex;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0.35rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.mode-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.95rem;
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mode-pill:hover {
+  color: #000;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.mode-pill.active {
+  background: var(--navy);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(23, 48, 122, 0.28);
+}
+
+/* MODE 1: PARALLAX 3D CARDS GRID */
+.movement-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  perspective: 1400px;
+}
+
+.parallax-card-shell {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid rgba(23, 48, 122, 0.12);
+  border-radius: 20px;
+  padding: 0.85rem;
+  box-shadow: 0 10px 30px rgba(23, 48, 122, 0.08);
+  cursor: pointer;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  user-select: none;
+}
+
+.parallax-card-shell:hover,
+.parallax-card-shell.hovered {
+  border-color: rgba(244, 194, 13, 0.8);
+  box-shadow: 0 20px 45px rgba(23, 48, 122, 0.2), 0 0 25px rgba(244, 194, 13, 0.25);
+}
+
+.card-specular-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  pointer-events: none;
+  z-index: 5;
+  mix-blend-mode: overlay;
+  transition: opacity 0.25s ease;
+}
+
+.card-floating-pill {
+  position: absolute;
+  top: 1.4rem;
+  left: 1.4rem;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(15, 33, 88, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  transition: transform 0.15s ease-out;
+}
+
+.card-img-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3.2;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0f2158;
+}
+
+.card-parallax-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.15s ease-out;
+}
+
+.card-img-gradient-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.4) 100%);
+  pointer-events: none;
+}
+
+.card-content-depth {
+  padding: 1rem 0.5rem 0.5rem;
+  transition: transform 0.15s ease-out;
+}
+
+.card-content-depth h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #000;
+  margin: 0.4rem 0 0.35rem;
+  line-height: 1.3;
+}
+
+.card-desc {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.45;
+  margin-bottom: 0.75rem;
+}
+
+.card-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--line);
+  padding-top: 0.65rem;
+}
+
+.btn-zoom-hint {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--navy);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: color 0.2s ease;
+}
+
+.parallax-card-shell:hover .btn-zoom-hint {
+  color: #d7263d;
+}
+
+/* MODE 2: 3D CYLINDER CAROUSEL */
+.movement-carousel-stage {
+  position: relative;
+  width: 100%;
+  perspective: 1400px;
+  padding: 1.5rem 0 2rem;
+  overflow: hidden;
+}
+
+.movement-carousel-viewport {
+  width: 100%;
+  height: 480px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.movement-carousel-cylinder {
+  position: relative;
+  width: 320px;
+  height: 420px;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.carousel-3d-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 420px;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid rgba(23, 48, 122, 0.15);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+  transition: filter 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  filter: brightness(0.85) blur(0.5px);
+}
+
+.carousel-3d-card.active {
+  filter: brightness(1) blur(0);
+  border-color: #f4c20d;
+  box-shadow: 0 25px 60px rgba(23, 48, 122, 0.25), 0 0 30px rgba(244, 194, 13, 0.35);
+}
+
+.carousel-card-inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.carousel-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 230px;
+  overflow: hidden;
+  background: #0f2158;
+}
+
+.carousel-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-floating-badge {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  background: rgba(15, 33, 88, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.carousel-card-body {
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.carousel-card-body h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0.4rem 0 0.3rem;
+  color: #000;
+}
+
+.carousel-card-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--line);
+  padding-top: 0.6rem;
+}
+
+.stats-pill {
+  font-size: 0.74rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.btn-peek {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.carousel-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.carousel-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--line);
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--navy);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.carousel-btn:hover {
+  background: var(--navy);
+  color: #fff;
+}
+
+.carousel-btn.auto-toggle.active {
+  background: #f4c20d;
+  color: #0f2158;
+  border-color: #f4c20d;
+}
+
+.carousel-dots {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.carousel-dots .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: #cbd5e1;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  padding: 0;
+}
+
+.carousel-dots .dot.active {
+  width: 24px;
+  background: var(--navy);
+}
+
+/* MODE 3: INTERACTIVE 3D LENS */
+.movement-lens-stage {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .movement-lens-stage {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lens-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #0f2158;
+  cursor: crosshair;
+  border: 1px solid rgba(23, 48, 122, 0.2);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+}
+
+.lens-main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.12s ease-out;
+}
+
+.lens-crosshair {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.crosshair-ring {
+  width: 72px;
+  height: 72px;
+  border: 2px solid #f4c20d;
+  border-radius: 50%;
+  box-shadow: 0 0 16px rgba(244, 194, 13, 0.8), inset 0 0 10px rgba(244, 194, 13, 0.4);
+  animation: ringPulse 1.8s infinite;
+}
+
+@keyframes ringPulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.15); opacity: 0.6; }
+}
+
+.crosshair-label {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 33, 88, 0.9);
+  color: #f4c20d;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(244, 194, 13, 0.4);
+}
+
+.lens-overlay-info {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+  background: rgba(15, 33, 88, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  color: #fff;
+  pointer-events: none;
+}
+
+.lens-overlay-info h3 {
+  color: #fff;
+  font-size: 1.15rem;
+  margin: 0.3rem 0;
+}
+
+.lens-overlay-info p {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin-bottom: 0.35rem;
+}
+
+.hint-pill {
+  font-size: 0.72rem;
+  color: #f4c20d;
+  font-weight: 600;
+}
+
+.lens-thumbs-strip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.lens-thumb-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.6rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.lens-thumb-btn:hover {
+  background: #f8fafc;
+  border-color: rgba(23, 48, 122, 0.3);
+}
+
+.lens-thumb-btn.active {
+  border-color: #f4c20d;
+  background: #fffdf2;
+  box-shadow: 0 6px 18px rgba(244, 194, 13, 0.25);
+}
+
+.lens-thumb-btn img {
+  width: 72px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.thumb-caption b {
+  display: block;
+  font-size: 0.88rem;
+  color: #000;
+  line-height: 1.2;
+}
+
+.thumb-caption span {
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+
+/* -------------------------------------------------------------
+   5. FULL-WIDTH 3D CAMPUS EXPERIENCE SHOWCASE BANNER
+   ------------------------------------------------------------- */
+.home-3d-experience-section {
+  background: radial-gradient(circle at 50% 30%, #162b66 0%, #0a1334 100%);
+  color: #fff;
+  padding: 4rem 0 4.5rem;
+  position: relative;
+  overflow: hidden;
+  margin-top: 3rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.home-3d-experience-section::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(244, 194, 13, 0.15) 0%, rgba(244, 194, 13, 0) 70%);
+  pointer-events: none;
+}
+
+.home-3d-banner-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.3fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+@media (max-width: 960px) {
+  .home-3d-banner-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.home-3d-banner-text h2 {
+  color: #fff;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0.6rem 0 1rem;
+}
+
+.home-3d-banner-text p {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.home-3d-feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.8rem;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.feature-item .f-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(244, 194, 13, 0.2);
+  border: 1px solid #f4c20d;
+  color: #f4c20d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.home-3d-full-viewer-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 26px;
+  padding: 0.75rem;
+  height: 520px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+/* Compact mode refinements for Hero card */
+.campus-3d-container.compact .campus-3d-model-tabs {
+  top: auto;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.campus-3d-container.compact .tab-chip {
+  padding: 0.28rem 0.6rem;
+  font-size: 0.74rem;
+}
+
+.campus-3d-container.compact .campus-3d-hotspots-bar {
+  display: none;
+}
+
+/* Mobile & Tablet Responsive Enhancements */
+@media (max-width: 900px) {
+  .hero-3d-wrapper {
+    height: 400px;
+  }
+  .movement-carousel-viewport {
+    height: 430px;
+  }
+}
+
+@media (max-width: 768px) {
+  .movement-carousel-viewport {
+    height: 410px;
+  }
+  .movement-carousel-cylinder {
+    width: 270px;
+    height: 380px;
+  }
+  .carousel-3d-card {
+    width: 270px;
+    height: 380px;
+  }
+  .carousel-img-wrap {
+    height: 190px;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero-media-tabs {
+    flex-direction: column;
+    border-radius: 18px;
+    gap: 0.3rem;
+  }
+  .hero-3d-wrapper {
+    height: 350px;
+  }
+  .movement-mode-pills {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+

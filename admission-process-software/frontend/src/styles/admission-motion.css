@@ -1,0 +1,1030 @@
+/* ==========================================================================
+   ADMISSION PROCESS STEPS WITH 3D ROLL TRANSITIONS
+   Bharathidasan Engineering College (BEC) - Admission Software
+   Smooth 3D perspective roll transitions: vertical drum roll & horizontal carousel roll.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Container & Section Wrapper
+   -------------------------------------------------------------------------- */
+.admission-roll-section {
+  position: relative;
+  width: 100%;
+  margin: 1.5rem 0 2.5rem;
+  border-radius: 22px;
+  background: #ffffff;
+  border: 1px solid #d9e0f3;
+  box-shadow: 0 8px 30px rgba(15, 33, 88, 0.08);
+  padding: 2.2rem 2rem;
+  color: #1e293b;
+  overflow: hidden;
+}
+
+.roll-section-container {
+  position: relative;
+  z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Header & Mode Switcher
+   -------------------------------------------------------------------------- */
+.roll-header-block {
+  text-align: center;
+  max-width: 820px;
+  margin: 0 auto 1.85rem;
+}
+
+.roll-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(23, 48, 122, 0.08);
+  color: #17307a;
+  border: 1px solid rgba(23, 48, 122, 0.2);
+  border-radius: 999px;
+  padding: 0.35rem 0.95rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.roll-indicator-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f4c20d;
+  box-shadow: 0 0 8px #f4c20d;
+}
+
+.roll-header-block h2 {
+  color: #0f2158;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-weight: 800;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.roll-header-block p {
+  color: #4b5563;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  margin: 0 auto 1.25rem;
+}
+
+.roll-view-mode-bar {
+  display: inline-flex;
+  gap: 0.5rem;
+  background: #f1f5f9;
+  padding: 0.35rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.roll-mode-btn {
+  background: transparent;
+  border: none;
+  color: #475569;
+  padding: 0.5rem 1.15rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.roll-mode-btn:hover {
+  color: #0f2158;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.roll-mode-btn.active {
+  background: #17307a;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(23, 48, 122, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   Administrative Office Banner
+   -------------------------------------------------------------------------- */
+.roll-admin-banner {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.roll-banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.roll-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(15, 33, 88, 0.94) 0%, rgba(15, 33, 88, 0.78) 60%, rgba(15, 33, 88, 0.45) 100%);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #ffffff;
+  max-width: 680px;
+}
+
+.roll-banner-badge {
+  display: inline-block;
+  background: rgba(244, 194, 13, 0.25);
+  color: #f4c20d;
+  border: 1px solid rgba(244, 194, 13, 0.45);
+  padding: 0.22rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  width: fit-content;
+}
+
+.roll-banner-overlay h3 {
+  color: #ffffff;
+  font-size: 1.55rem;
+  font-weight: 800;
+  margin: 0 0 0.35rem;
+}
+
+.roll-banner-overlay p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.94rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   VIEW 1: 3D CYLINDRICAL STEP DRUM / ROLLER DIAL
+   -------------------------------------------------------------------------- */
+.roll-viewport-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.roll-drum-track-container {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1rem 1rem 0.5rem;
+  position: relative;
+}
+
+.roll-drum-track {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  padding: 0.4rem 0.2rem 0.8rem;
+  scrollbar-width: thin;
+}
+
+.drum-node-pill {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 0.55rem 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.drum-node-pill:hover {
+  background: #eef2ff;
+  border-color: #17307a;
+  transform: translateY(-2px);
+}
+
+.drum-node-pill.active {
+  background: #17307a;
+  border-color: #17307a;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(23, 48, 122, 0.3);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.drum-node-number {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #0f2158;
+  font-weight: 800;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+}
+
+.drum-node-pill.active .drum-node-number {
+  background: #f4c20d;
+  color: #0f2158;
+}
+
+.drum-node-pill.completed .drum-node-number {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.drum-node-label {
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.drum-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 0.25rem;
+}
+
+.drum-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #17307a, #3b82f6, #f4c20d);
+  transition: width 0.4s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Roll Controls Toolbar
+   -------------------------------------------------------------------------- */
+.roll-controls-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 0.75rem 1.25rem;
+  flex-wrap: wrap;
+}
+
+.roll-axis-toggles,
+.roll-playback-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.toolbar-btn {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.toolbar-btn:hover {
+  background: #f1f5f9;
+  border-color: #17307a;
+  color: #0f2158;
+}
+
+.toolbar-btn.active {
+  background: #17307a;
+  border-color: #17307a;
+  color: #ffffff;
+}
+
+.auto-roll-btn.active {
+  background: #059669;
+  border-color: #059669;
+  color: #ffffff;
+}
+
+.roll-step-counter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.82rem;
+  color: #64748b;
+  background: #ffffff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.roll-step-counter-chip b {
+  color: #0f2158;
+}
+
+/* --------------------------------------------------------------------------
+   THE 3D ROLL STAGE VIEWPORT & ROLL TRANSITIONS
+   -------------------------------------------------------------------------- */
+.roll-3d-stage-viewport {
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
+  position: relative;
+  min-height: 440px;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 30px rgba(15, 33, 88, 0.07);
+  overflow: hidden;
+}
+
+.roll-card-3d-face {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  padding: 2.2rem;
+  animation-duration: 0.65s;
+  animation-timing-function: cubic-bezier(0.2, 0.85, 0.3, 1);
+  animation-fill-mode: both;
+}
+
+/* Vertical Roll In Animations */
+.roll-in-from-bottom {
+  animation-name: rollInBottom;
+}
+
+.roll-in-from-top {
+  animation-name: rollInTop;
+}
+
+@keyframes rollInBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(90px) rotateX(-65deg) scale(0.92);
+  }
+  65% {
+    transform: translateY(-8px) rotateX(6deg) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg) scale(1);
+  }
+}
+
+@keyframes rollInTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-90px) rotateX(65deg) scale(0.92);
+  }
+  65% {
+    transform: translateY(8px) rotateX(-6deg) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg) scale(1);
+  }
+}
+
+/* Horizontal Roll In Animations */
+.roll-in-from-right {
+  animation-name: rollInRight;
+}
+
+.roll-in-from-left {
+  animation-name: rollInLeft;
+}
+
+@keyframes rollInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(110px) rotateY(65deg) scale(0.92);
+  }
+  65% {
+    transform: translateX(-10px) rotateY(-6deg) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotateY(0deg) scale(1);
+  }
+}
+
+@keyframes rollInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-110px) rotateY(-65deg) scale(0.92);
+  }
+  65% {
+    transform: translateX(10px) rotateY(6deg) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotateY(0deg) scale(1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Roll Card Inner Content Grid
+   -------------------------------------------------------------------------- */
+.roll-card-inner-grid {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 2.2rem;
+  align-items: center;
+}
+
+.roll-visual-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 1.8rem 1.4rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+/* Odometer Rolling Step Number */
+.roll-number-odometer {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #17307a;
+  color: #ffffff;
+  padding: 0.25rem 0.85rem;
+  border-radius: 999px;
+  margin-bottom: 0.85rem;
+  font-weight: 800;
+  box-shadow: 0 3px 10px rgba(23, 48, 122, 0.25);
+}
+
+.odometer-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.odometer-digit {
+  font-size: 1.15rem;
+  color: #f4c20d;
+  display: inline-block;
+  animation: rollDigit 0.5s cubic-bezier(0.2, 0.85, 0.3, 1);
+}
+
+@keyframes rollDigit {
+  0% { transform: translateY(-100%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.roll-large-icon {
+  font-size: 4.5rem;
+  margin: 0.5rem 0 1rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+}
+
+.roll-meta-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.roll-duration-pill {
+  font-size: 0.78rem;
+  color: #475569;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.roll-status-pill {
+  font-size: 0.78rem;
+  color: #047857;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+/* Right Details Side */
+.roll-details-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.roll-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.roll-title-row h3 {
+  color: #0f2158;
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.roll-accent-tag {
+  background: rgba(244, 194, 13, 0.2);
+  color: #b45309;
+  border: 1px solid rgba(244, 194, 13, 0.4);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.roll-description-paragraph {
+  color: #334155;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.roll-checkpoints-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #17307a;
+  border-radius: 12px;
+  padding: 1.15rem 1.4rem;
+}
+
+.roll-checkpoints-card h4 {
+  color: #0f2158;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 0.65rem;
+}
+
+.roll-checkpoints-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.roll-checkpoints-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.9rem;
+  color: #334155;
+}
+
+.roll-check-icon {
+  color: #059669;
+  font-weight: 800;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.roll-card-actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+  margin-top: 0.5rem;
+}
+
+.roll-primary-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: linear-gradient(135deg, #f4c20d, #eab308);
+  color: #0f2158 !important;
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 0.7rem 1.5rem;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(244, 194, 13, 0.4);
+  transition: all 0.25s ease;
+}
+
+.roll-primary-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(244, 194, 13, 0.55);
+}
+
+.roll-nav-action-cluster {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.roll-mini-nav-btn {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #1e293b;
+  padding: 0.55rem 0.95rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.roll-mini-nav-btn:hover:not(:disabled) {
+  background: #f1f5f9;
+  border-color: #17307a;
+  transform: translateY(-1px);
+}
+
+.roll-mini-nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Bottom Roll Step Indicator Dots */
+.roll-dots-nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.85rem 0;
+}
+
+.roll-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.2, 0.85, 0.3, 1);
+  padding: 0;
+}
+
+.roll-dot:hover {
+  background: #94a3b8;
+}
+
+.roll-dot.active {
+  width: 36px;
+  border-radius: 999px;
+  background: #17307a;
+  box-shadow: 0 2px 8px rgba(23, 48, 122, 0.35);
+}
+
+/* --------------------------------------------------------------------------
+   VIEW 2: ALL STEPS GRID (WITH 3D HOVER ROLL EFFECTS)
+   -------------------------------------------------------------------------- */
+.roll-grid-showcase {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.35rem;
+  margin-bottom: 2rem;
+  perspective: 1000px;
+}
+
+.roll-grid-item {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.2, 0.85, 0.3, 1), box-shadow 0.35s ease, border-color 0.2s ease;
+  transform-style: preserve-3d;
+}
+
+.roll-grid-item:hover {
+  transform: translateY(-8px) rotateX(4deg);
+  border-color: #17307a;
+  background: #ffffff;
+  box-shadow: 0 16px 36px rgba(15, 33, 88, 0.12);
+}
+
+.grid-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.85rem;
+}
+
+.grid-step-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #17307a;
+  color: #f4c20d;
+  font-weight: 800;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-duration-tag {
+  font-size: 0.76rem;
+  color: #64748b;
+  background: #e2e8f0;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.grid-item-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.75rem;
+}
+
+.roll-grid-item h3 {
+  color: #0f2158;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 0.45rem;
+}
+
+.roll-grid-item p {
+  color: #475569;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  margin: 0 0 1.25rem;
+}
+
+.grid-item-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.85rem;
+  border-top: 1px solid #e2e8f0;
+  font-size: 0.82rem;
+}
+
+.grid-status-lbl {
+  color: #0284c7;
+  font-weight: 700;
+}
+
+.grid-roll-hint {
+  color: #17307a;
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   Modal Dialog
+   -------------------------------------------------------------------------- */
+.roll-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 33, 88, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.roll-modal-box {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 20px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 100%;
+  padding: 2.2rem;
+  position: relative;
+  animation: modalRollIn 0.35s cubic-bezier(0.2, 0.85, 0.3, 1);
+}
+
+@keyframes modalRollIn {
+  0% { transform: scale(0.9) rotateX(-20deg); opacity: 0; }
+  100% { transform: scale(1) rotateX(0deg); opacity: 1; }
+}
+
+.roll-modal-close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.roll-modal-close:hover {
+  background: #e2e8f0;
+  transform: rotate(90deg);
+}
+
+.modal-top-identity {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.modal-icon-badge {
+  font-size: 2.5rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-step-sub {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.modal-top-identity h3 {
+  color: #0f2158;
+  font-size: 1.45rem;
+  font-weight: 800;
+  margin: 0.25rem 0 0;
+}
+
+.modal-desc-body {
+  color: #334155;
+  line-height: 1.6;
+  font-size: 0.98rem;
+  margin-bottom: 1.25rem;
+}
+
+.modal-checklist-title {
+  color: #0f2158;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 0.65rem;
+}
+
+.modal-points-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.modal-points-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.9rem;
+  color: #334155;
+}
+
+.modal-tick-symbol {
+  color: #059669;
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.modal-buttons-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 1.25rem;
+}
+
+/* --------------------------------------------------------------------------
+   Footer Notice
+   -------------------------------------------------------------------------- */
+.roll-footer-notice {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-left: 5px solid #17307a;
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.notice-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  max-width: 720px;
+}
+
+.notice-lamp {
+  font-size: 1.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.notice-left b {
+  color: #0f2158;
+  font-size: 0.98rem;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.notice-left p {
+  color: #475569;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.notice-right {
+  display: flex;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Rules
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .roll-card-inner-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .roll-visual-side {
+    flex-direction: row;
+    gap: 1.25rem;
+    text-align: left;
+    justify-content: flex-start;
+  }
+  .roll-large-icon {
+    font-size: 3rem;
+    margin: 0;
+  }
+  .roll-meta-badges {
+    flex-direction: row;
+    width: auto;
+  }
+}
+
+@media (max-width: 650px) {
+  .admission-roll-section {
+    padding: 1.5rem 1rem;
+    border-radius: 16px;
+  }
+  .roll-controls-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .roll-playback-controls {
+    justify-content: space-between;
+  }
+  .roll-axis-toggles {
+    justify-content: space-between;
+  }
+  .roll-step-counter-chip {
+    justify-content: center;
+  }
+  .roll-card-3d-face {
+    padding: 1.25rem;
+  }
+  .roll-footer-notice {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .notice-right {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
