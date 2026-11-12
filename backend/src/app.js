@@ -1,4 +1,3 @@
-
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
@@ -6,6 +5,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
+const fs = require('fs');
 
 const env = require('./config/env');
 const routes = require('./routes');
@@ -36,23 +36,29 @@ app.use(cookieParser());
 // API routes
 app.use('/api', routes);
 
-// Serve React frontend
-const frontendDist = path.resolve(
-  __dirname,
-  '../../frontend/dist'
-);
+// Serve React frontend only when a build exists (single-server setups).
+// On Render + Vercel the frontend lives on Vercel, so this is skipped.
+const frontendDist = path.resolve(__dirname, '../../frontend/dist');
 
-app.use(express.static(frontendDist));
+if (fs.existsSync(path.join(frontendDist, 'index.html'))) {
+  app.use(express.static(frontendDist));
 
-app.get('*', (req, res, next) => {
-  if (req.path.startsWith('/api/')) {
-    return next();
-  }
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api/')) {
+      return next();
+    }
 
-  res.sendFile(path.join(frontendDist, 'index.html'), (err) => {
-    if (err) next(err);
+    res.sendFile(path.join(frontendDist, 'index.html'), (err) => {
+      if (err) next(err);
+    });
   });
-});
+} else {
+  app.get('/', (req, res) => {
+    res.json({
+      message: 'BEC Admission API is running. Open the web app URL to use the site.'
+    });
+  });
+}
 
 // Error handling
 app.use(notFound);
